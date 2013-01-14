@@ -1,0 +1,76 @@
+<?php
+class Mysql {
+  private $host;
+	private $name;
+	private $password;
+	private $table;
+
+	function __construct($host, $name, $password, $table) {
+		$this->host = $host;
+		$this->name = $name;
+		$this->password = $password;
+		$this->table = $table;
+	}
+
+	function connect($host, $name, $password, $table) {
+		mysql_connect($this->host, $this->name, $this->password) or die($this ->error());
+		mysql_connect($this->table) or die($this->table."is not exist!");
+	}
+
+	function query($sql, $type = '') {
+	    if(!($query = mysql_query($sql))) $this->show('Say:', $sql);
+	    return $query;
+	}
+
+	function error(){
+		return mysql_error();
+	}
+
+    function show($message = '', $sql = '') {
+		if(!$sql) echo $message;
+		else echo $message.'<br>'.$sql;
+	}
+
+    function affected_rows() {
+		return mysql_affected_rows();
+	}
+
+	function result($query, $row) {
+		return mysql_result($query, $row);
+	}
+
+	function num_rows($query) {
+		return @mysql_num_rows($query);
+	}
+
+	function num_fields($query) {
+		return mysql_num_fields($query);
+	}
+
+	function free_result($query) {
+		return mysql_free_result($query);
+	}
+
+	function insert_id() {
+		return mysql_insert_id();
+	}
+
+	function fetch_row($query) {
+		return mysql_fetch_row($query);
+	}
+
+	function version() {
+		return mysql_get_server_info();
+	}
+
+	function close() {
+		return mysql_close();
+	}
+
+	//================================
+
+	function fn_insert($table, $name, $value){
+		$this->query("insert into $table ($name) value($value)");
+	}
+}
+?>
